@@ -1,10 +1,10 @@
-import * as Navbar from "./Navbar";
-import * as Layout from "./Layout";
-import * as Product from "./Product";
-import * as Footer from "./Footer";
-import * as HeroBanner from "./HeroBanner";
-import * as FooterBanner from "./FooterBanner";
-import * as Card from "./Card";
+import {default as Navbar} from "./Navbar";
+import {default as Layout} from "./Layout";
+import {default as Product} from "./Product";
+import {default as Footer} from "./Footer";
+import {default as HeroBanner} from "./HeroBanner";
+import {default as FooterBanner} from "./FooterBanner";
+import {default as Card} from "./Card";
 
 import React from 'react'
 

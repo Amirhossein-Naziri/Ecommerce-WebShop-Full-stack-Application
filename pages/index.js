@@ -1,11 +1,13 @@
 import React from 'react';
-// import {Product , FooterBanner , HeroBanner } from "./../components"
+// import {Product , FooterBanner , HeroBanner } from "./../components/"
 import Product from '../components/Product';
+
+import HeroBanner from '../components/HeroBanner';
 
 const index = () => {
   return (
     <>
-     <div>index</div>
+      <HeroBanner/>
     </>
   )
 }
