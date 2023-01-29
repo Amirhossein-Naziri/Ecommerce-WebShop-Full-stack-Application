@@ -4,6 +4,7 @@ import Product from '../components/Product';
 import HeroBanner from '../components/HeroBanner';
 import FooterBanner from '../components/FooterBanner';
 import {client} from "../lib/client"
+import banner from '../ecomerce/schemas/banner';
 
 const index = ({products , bannerData}) => {
   return (
@@ -14,12 +15,12 @@ const index = ({products , bannerData}) => {
           <h2>Best Seller Products</h2>
           <p>iphone 14 Apple</p>
         </div>
-
+        {console.log(products)}
         <div className='products-container'>
-          {products?.map((product) => product)}
+          {products?.map((product) => <Product key={product._id} product={product}/>)}
         </div>
 
-      <FooterBanner/>
+      <FooterBanner footerBanner={bannerData && bannerData[1]}/>
     
     </>
   )
@@ -27,13 +28,13 @@ const index = ({products , bannerData}) => {
 }
 export const getServerSideProps = async()=>{
     const productQuery = '*[_type == "product"]';
-    const product = await client.fetch(productQuery);
+    const products = await client.fetch(productQuery);
 
     const bannerQuery = '*[_type == "banner"]';
     const bannerData = await client.fetch(bannerQuery);
 
     return {
-      props:{product , bannerData}
+      props:{products , bannerData}
     }
     
 }
