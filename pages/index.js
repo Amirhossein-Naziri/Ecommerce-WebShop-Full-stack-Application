@@ -15,7 +15,7 @@ const index = ({products , bannerData}) => {
           <h2>Best Seller Products</h2>
           <p>iphone 14 Apple</p>
         </div>
-        {console.log(products)}
+        {/* {console.log(products)} */}
         <div className='products-container'>
           {products?.map((product) => <Product key={product._id} product={product}/>)}
         </div>
