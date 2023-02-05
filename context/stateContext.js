@@ -1,9 +1,9 @@
-import React ,  { createContext , use, useContext , useState } from "react";
+import React ,  { createContext , useContext , useState } from "react";
 import { toast } from "react-hot-toast";
 
 const Context = createContext();
 
-export const stateContext = ({children}) => {
+export const StateContext = ({children}) => {
     const [showCart , setShowCart  ] = useState(false);
     const [cartItems , setCartItems] = useState();
     const [totalPrice , setTotalPrice] = useState();
