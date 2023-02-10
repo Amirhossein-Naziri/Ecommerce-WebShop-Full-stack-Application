@@ -4,11 +4,48 @@ import toast from 'react-hot-toast';
 import { useStateContext } from '../context/stateContext';
 import { AiOutlineLeft, AiOutlineMinus, AiOutlinePlus, AiOutlineShopping } from 'react-icons/ai';
 import { urlFor } from '../lib/client';
-import {TiDeleteOutline} from "react-icons/ti"
+import {TiDeleteOutline} from "react-icons/ti";
+import getStripe from '../lib/getStripe';
+import Stripe from 'stripe';
+
 
 function Card() {
   const cardRef = useRef();
-  const {totalPrice , cartItems , showCart , setShowCart , totalQuantities} = useStateContext();
+  const {totalPrice , cartItems , showCart ,
+     setShowCart ,
+     totalQuantities ,
+     toggleCartItemQuanitity,
+     OnRemove
+    } = useStateContext();
+
+    const handleCheckout = async () =>{
+      console.log("cartItems: ",cartItems)
+
+      const stripe = await getStripe();
+
+      const response = await fetch("/api/stripe" , {
+        method:"POST",
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify(cartItems),
+        // body:JSON.stringify({hello:"hello"}),
+        // body:{hello:"hello"},
+      });
+
+      // console.log(response.body)
+
+      if(response.status === "500") return;
+
+      const data = await response.json();
+
+      toast.loading("Redirecting...");
+
+      console.log("data" ,data.body);
+
+      stripe.redirectToCheckout({ sessionId: data.id });
+    }
+
   return (
     <div className='cart-wrapper' ref={cardRef}>
       <div className="cart-container">
@@ -44,13 +81,13 @@ function Card() {
                 <div className="flex bottom">
                   <div>
                   <p className="quantity-desc">
-                        <span className='minus' onClick=""><AiOutlineMinus/></span>
-                        <span className='num' onClick="">{0}</span>
-                        <span className='plus' onClick=""><AiOutlinePlus/></span>
+                        <span className='minus' onClick={()=> toggleCartItemQuanitity(item._id , "dec")}><AiOutlineMinus/></span>
+                        <span className='num' onClick="">{item.quantity}</span>
+                        <span className='plus' onClick={()=> toggleCartItemQuanitity(item._id , "inc")}><AiOutlinePlus/></span>
                     </p>
                   </div>
                   <button type="button" 
-                  className='remove-item' onClick="">
+                  className='remove-item' onClick={()=> OnRemove(item)}>
                     <TiDeleteOutline/>
                   </button>
                 </div>
@@ -64,7 +101,7 @@ function Card() {
                 <h3>${totalPrice}</h3>
               </div>
               <div className="btn-container">
-              <button type="button" className="btn" onClick="">
+              <button type="button" className="btn" onClick={handleCheckout}>
                 Pay with Stripe
               </button>
             </div>
